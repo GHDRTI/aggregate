@@ -29,8 +29,8 @@ group = 'org.opendatakit'
 version = getVersionName()
 description = ""
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
   mavenCentral()
@@ -94,6 +94,7 @@ dependencies {
   compile group: 'org.slf4j', name: 'log4j-over-slf4j', version: '1.7.25'
   compile group: 'org.slf4j', name: 'slf4j-jdk14', version: '1.7.25'
 
+  compile group: 'com.google.cloud.sql', name: 'mysql-socket-factory', version: '1.0.8'
   compile group: 'org.opendatakit', name: 'odk-tomcatutil', version: versions.odk.tomcatUtil
   compile group: 'org.springframework', name: 'spring-aop', version: versions.spring
   compile group: 'org.springframework', name: 'spring-aspects', version: versions.spring

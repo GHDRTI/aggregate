@@ -35,15 +35,15 @@
 	</bean>
 
 	<bean id="datastore"
-		class="org.opendatakit.common.persistence.engine.pgres.DatastoreImpl">
+		class="org.opendatakit.common.persistence.engine.mysql.DatastoreImpl">
 		<property name="dataSource" ref="dataSource" />
-		<!-- schemaName defaults to the database name.  Override this with: -->
+		<!--		schemaName defaults to the database name.  Override this with: -->
 		<property name="schemaName" value="${jdbc.schema}" />
 	</bean>
 
 	<!--	Website domain information	-->
 	<bean id="realm" class="org.opendatakit.common.security.Realm">
-		<property name="isGaeEnvironment" value="false" />
+		<property name="isGaeEnvironment" value="true" />
 		<property name="realmString" value="${security.server.realm.realmString}" />
 		<property name="hostname" value="${security.server.hostname}" />
 		<property name="port" value="${security.server.port}" />
@@ -65,27 +65,23 @@
 		<property name="userService" ref="user_service"/>
 	</bean>
 
-	<!--  change the background scheduler to only have three worker threads. Tasks will be queued. -->
-	<task:scheduler id="task_scheduler" pool-size="3" />
-
 	<bean id="worksheet_creator"
-		class="org.opendatakit.aggregate.task.tomcat.WorksheetCreatorImpl" />
-	<bean id="form_delete" class="org.opendatakit.aggregate.task.tomcat.FormDeleteImpl" />
-	<bean id="purge_submissions" class="org.opendatakit.aggregate.task.tomcat.PurgeOlderSubmissionsImpl" />
+		class="org.opendatakit.aggregate.task.gae.WorksheetCreatorImpl" />
+	<bean id="form_delete" class="org.opendatakit.aggregate.task.gae.FormDeleteImpl" />
+	<bean id="purge_submissions" class="org.opendatakit.aggregate.task.gae.PurgeOlderSubmissionsImpl" />
 	<bean id="upload_task"
-		class="org.opendatakit.aggregate.task.tomcat.UploadSubmissionsImpl" />
-	<bean id="kml_task" class="org.opendatakit.aggregate.task.tomcat.KmlGeneratorImpl" />
-	<bean id="csv_task" class="org.opendatakit.aggregate.task.tomcat.CsvGeneratorImpl" />
-	<bean id="json_file_task" class="org.opendatakit.aggregate.task.tomcat.JsonFileGeneratorImpl" />
-    <bean id="http_client_factory" class="org.opendatakit.common.utils.tomcat.TomcatHttpClientFactoryImpl" />
-    <bean id="image_util" class="org.opendatakit.aggregate.util.tomcat.ImageUtilImpl" />
+		class="org.opendatakit.aggregate.task.gae.UploadSubmissionsImpl" />
+	<bean id="kml_task" class="org.opendatakit.aggregate.task.gae.KmlGeneratorImpl" />
+	<bean id="csv_task" class="org.opendatakit.aggregate.task.gae.CsvGeneratorImpl" />
+	<bean id="json_file_task" class="org.opendatakit.aggregate.task.gae.JsonFileGeneratorImpl" />
+    <bean id="http_client_factory" class="org.opendatakit.common.utils.gae.GaeHttpClientFactoryImpl" />
+    <bean id="image_util" class="org.opendatakit.aggregate.util.gae.ImageUtilImpl" />
 	<bean id="startup" class="org.opendatakit.aggregate.AggregateStartupImpl" />
-	<bean id="oob_user_fetcher" class="org.opendatakit.common.utils.tomcat.TomcatOutOfBandUserFetcher" />
+	<bean id="oob_user_fetcher" class="org.opendatakit.common.utils.gae.GaeOutOfBandUserFetcher" />
 
-	<bean id="watchdog" class="org.opendatakit.aggregate.task.tomcat.WatchdogImpl">
+	<bean id="watchdog" class="org.opendatakit.aggregate.task.gae.WatchdogImpl">
 		<property name="datastore" ref="datastore" />
 		<property name="userService" ref="user_service" />
-		<property name="taskScheduler" ref="task_scheduler" />
 		<property name="worksheetCreator" ref="worksheet_creator" />
 		<property name="purgeSubmissions" ref="purge_submissions" />
 		<property name="formDelete" ref="form_delete" />

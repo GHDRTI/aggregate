@@ -18,11 +18,12 @@ class Update extends JavaExec {
   }
 
   String getSDKHome() {
-    return "${getWorkingDir()}/appengine-java-sdk-1.9.63".toString()
+    println("here is my sdk ${getWorkingDir()}/appengine-java-sdk-1.9.54");
+    return "${getWorkingDir()}/appengine-java-sdk-1.9.54".toString()
   }
 
   String getEarPath() {
-    return "${getWorkingDir()}/ear".toString()
+    return "${getWorkingDir()}/ear/default".toString()
   }
 
   @Override

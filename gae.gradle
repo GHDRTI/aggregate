@@ -8,9 +8,9 @@ import static org.opendatakit.aggregate.gradle.Util.truncate
 task gaeDownloadSDK() {
   doLast {
     if (!file('installer/appEngineSDK.zip').exists()) {
-      println("Downloading App Engine SDK 1.9.63")
+      println("Downloading App Engine SDK")
       download {
-        src 'https://storage.googleapis.com/appengine-sdks/featured/appengine-java-sdk-1.9.63.zip'
+        src 'https://storage.googleapis.com/appengine-sdks/featured/appengine-java-sdk-1.9.54.zip'
         dest 'installer/appEngineSDK.zip'
       }
     } else
@@ -28,13 +28,13 @@ task gaeCopyFiles(dependsOn: explodedWar, type: Copy) {
 
   into("background") {
     from fileTree(dir: "${buildDir}/exploded")
-    exclude "WEB-INF/classes/odk-settings.xml"
+    //exclude "WEB-INF/classes/odk-settings.xml"
     exclude "WEB-INF/classes/security.properties"
   }
 
   into("default") {
     from fileTree(dir: "${buildDir}/exploded")
-    exclude "WEB-INF/classes/odk-settings.xml"
+    //exclude "WEB-INF/classes/odk-settings.xml"
     exclude "WEB-INF/classes/security.properties"
   }
 
@@ -67,8 +67,9 @@ task gaePrepare(dependsOn: [gaeCopyFiles, gaeCopySDK, gaeCopyDummyApp]) {
     setPropertiesValue("${buildDir}/gae/ear/background/WEB-INF/classes/security.properties", "security.server.hostname", "${gaeAppId}.appspot.com")
     setPropertiesValue("${buildDir}/gae/ear/background/WEB-INF/classes/security.properties", "security.server.realm.realmString", "${aggregateInstanceName} ODK Aggregate")
     setPropertiesValue("${buildDir}/gae/ear/background/WEB-INF/classes/security.properties", "security.server.superUserUsername", "${aggregateUsername}")
-    truncate("${buildDir}/gae/ear/default/WEB-INF/classes/jdbc.properties")
-    truncate("${buildDir}/gae/ear/background/WEB-INF/classes/jdbc.properties")
+
+      //truncate("${buildDir}/gae/ear/default/WEB-INF/classes/jdbc.properties")
+    //truncate("${buildDir}/gae/ear/background/WEB-INF/classes/jdbc.properties")
   }
 }
 
@@ -84,7 +85,7 @@ task gaeRollback(dependsOn: [gaePrepare, gaeRollbackModule("default"), gaeRollba
 
 }
 
-task gaeUpdate(dependsOn: gaePrepare, type: Update) {
+task gaeUpdate( dependsOn: gaePrepare, type: Update) {
   email = "${-> gaeEmail}"
   workingDir = "${buildDir}/gae"
 
